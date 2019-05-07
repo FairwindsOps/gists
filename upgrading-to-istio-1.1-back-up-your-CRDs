@@ -1,0 +1,2 @@
+kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | cut -f1-1 -d "." | \
+xargs -n1 -i sh -c "kubectl get --all-namespaces -oyaml {}; echo ---" > crd-backup.yml
