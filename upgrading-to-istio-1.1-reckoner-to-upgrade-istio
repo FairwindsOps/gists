@@ -1,0 +1,12 @@
+istio:
+  version: "1.1.0"
+  repository:
+    git: git@github.com:istio/istio.git
+    path: install/kubernetes/helm
+  namespace: istio-system
+  set-values:
+    gateways:
+      istio-ingressgateway:
+        autoscaleMin: 2
+      istio-egressgateway:
+        enabled: true
