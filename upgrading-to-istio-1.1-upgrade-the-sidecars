@@ -1,0 +1,13 @@
+#!/bin/bash
+
+NAMESPACES=$(kubectl get ns -l istio-injection=enabled | tail -n +2 | cut -d ' ' -f 1 | tr -d '')
+
+for ns in $NAMESPACES; do
+  echo "Processing namespace $ns:"
+  DEPLOYMENT_LIST=$(kubectl -n $ns get deploy -o jsonpath='{.items[*].metadata.name}')
+  for deploy in $DEPLOYMENT_LIST; do
+    echo "  $deploy"
+    PATCH='{"spec":{"template":{"metadata":{"annotations":{"rolling_update":"'$(date +%s)'"}}}}}'
+    kubectl -n $ns patch deployment $deploy -p $PATCH
+  done
+done 
